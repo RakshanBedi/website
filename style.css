@@ -1,0 +1,482 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Added Open Sans as a more modern, playful alternative */
+    line-height: 1.6;
+    color: #2c2c2c; /* Slightly softer black for text */
+    background-color: #f8f8f8; /* Lighter grey for overall background */
+    -webkit-font-smoothing: antialiased; /* Smoother fonts on WebKit browsers */
+    -moz-osx-font-smoothing: grayscale; /* Smoother fonts on Firefox */
+}
+
+/* Google Font import moved to HTML for better performance */
+/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700;900&family=Roboto:wght@900&display=swap'); */
+/* Roboto for very bold headings, Open Sans for body and other headings */
+
+header {
+    background: #e60012; /* Official Coca-Cola Red */
+    color: #fff;
+    padding: 0.75rem 0; /* Slightly reduced padding */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+nav .logo img {
+    height: 45px; /* Slightly adjusted logo size */
+    vertical-align: middle; /* Better alignment if text is next to it */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700; /* Bolder nav links */
+    padding: 8px 15px; /* Increased padding for a better click area */
+    transition: color 0.3s ease, transform 0.3s ease; /* Added transform transition */
+    position: relative; /* For potential underline effects */
+    font-size: 0.95rem;
+}
+
+nav ul li a:hover {
+    color: #ffd700; /* Gold hover - example of a playful accent */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+nav ul li a::after { /* Underline effect example */
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffd700;
+    transition: width 0.3s ease;
+}
+
+nav ul li a:hover::after {
+    width: 70%; /* Underline appears on hover */
+}
+
+/* Accessibility: Add visible focus styles for keyboard navigation */
+nav ul li a:focus, .cta-button:focus, .product-item:focus, #contact input:focus, #contact textarea:focus, .menu-toggle:focus {
+    outline: 2px solid #005fcc; /* A common visible focus indicator color */
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(0, 95, 204, 0.3); /* Optional: a softer glow around the outline */
+}
+/* For elements where default outline might be an issue, like buttons with rounded corners, ensure outline-offset is used or border is used instead */
+.cta-button:focus {
+    outline-offset: 3px;
+}
+/* Ensure high contrast for focus on dark backgrounds if needed */
+header .menu-toggle:focus { /* Example if toggle was on dark bg and needed different focus */
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+
+main {
+    padding-top: 80px; /* Adjust based on header height */
+}
+
+section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+#hero {
+    background-color: #fff; /* White background for hero */
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden; /* Important for animations */
+}
+
+#hero .hero-content {
+    z-index: 2;
+}
+
+#hero h1 {
+    font-family: 'Roboto', sans-serif; /* Using Roboto for impactful hero heading */
+    font-size: 4.5rem; /* Larger font size */
+    color: #e60012; /* Official Coca-Cola Red */
+    margin-bottom: 15px; /* Reduced margin */
+    font-weight: 900;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* Subtle text shadow */
+    line-height: 1.1;
+}
+
+#hero p {
+    font-size: 1.3rem; /* Slightly smaller, more refined paragraph */
+    margin-bottom: 35px; /* Increased margin for button spacing */
+    color: #555; /* Darker grey for better readability */
+    max-width: 600px; /* Limit width for better readability */
+}
+
+.cta-button {
+    background-color: #e60012; /* Official Coca-Cola Red */
+    color: #fff;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    border-radius: 50px; /* More playful, rounded button */
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.cta-button:hover {
+    background-color: #c0000f; /* Slightly darker red on hover */
+    transform: scale(1.08) perspective(1px); /* Enhanced zoom effect, perspective for smoothness */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25); /* Increased shadow on hover */
+}
+
+/* Coke Wave and Bubbles - CSS for structure and basic animation hooks */
+.coke-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%; /* Double width for seamless scroll */
+    height: 100px; /* Adjusted height */
+    background: url('https://svgshare.com/i/184m.svg') repeat-x; /* Example SVG wave, make sure it's tileable */
+    background-size: 50% 100px; /* Tile two waves */
+    z-index: 1;
+    animation: waveScroll 15s linear infinite; /* CSS animation */
+    opacity: 0.8;
+    will-change: transform; /* Performance hint */
+}
+
+@keyframes waveScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%); /* Scrolls one full width of the original image */
+    }
+}
+
+.bubbles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden; /* Contain bubbles within hero */
+}
+
+.bubble { /* Styling for individual bubbles created by JS */
+    position: absolute;
+    bottom: -30px; /* Start from below */
+    background-color: rgba(229, 0, 18, 0.3); /* Light red bubbles */
+    border-radius: 50%;
+    opacity: 0; /* Start invisible, fade in with animation */
+    animation: rise 8s linear infinite; /* JS will set random duration/delay */
+    box-shadow: 0 0 5px rgba(229, 0, 18, 0.5);
+    will-change: transform, opacity; /* Performance hint */
+}
+
+@keyframes rise {
+    0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+    }
+    10%, 90% { /* Fade in and out during the middle of animation */
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-105vh) scale(1.2); /* Rise above viewport and grow slightly */
+        opacity: 0;
+    }
+}
+
+
+#products {
+    background-color: #ffffff; /* Cleaner white background */
+    border-top: 1px solid #eee; /* Subtle separator */
+}
+
+#products h2, #history h2, #community h2, #contact h2 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2.8rem; /* Slightly larger section titles */
+    color: #e60012; /* Official Coca-Cola Red */
+    margin-bottom: 50px; /* Increased margin */
+    font-weight: 900; /* Bolder section titles */
+    position: relative;
+    padding-bottom: 10px;
+}
+
+/* Underline effect for section titles */
+#products h2::after, #history h2::after, #community h2::after, #contact h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: #e60012;
+    border-radius: 2px;
+}
+
+
+.product-showcase {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.product-item {
+    background: #fff;
+    padding: 25px; /* Increased padding */
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08); /* Softer, more diffused shadow */
+    width: 280px; /* Slightly wider items */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+    text-align: center; /* Center content within product item */
+}
+
+.product-item:hover {
+    transform: translateY(-12px) scale(1.02); /* More pronounced hover effect */
+    box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+}
+
+.product-item img {
+    max-width: 80%; /* Control image size better */
+    height: auto;
+    margin-bottom: 20px; /* Increased margin */
+    transition: transform 0.3s ease; /* Animation for image */
+}
+
+.product-item:hover img {
+    transform: scale(1.05); /* Slight zoom on image hover */
+}
+
+.product-item h3 {
+    font-size: 1.3rem; /* Larger product title */
+    color: #333;
+    font-weight: 700;
+}
+
+#history {
+    background-color: #f8f8f8; /* Consistent light grey */
+}
+
+#community {
+    background-color: #ffffff; /* White for contrast */
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+#contact {
+    background-color: #f0f0f0; /* Light grey for contact section */
+    padding-bottom: 80px; /* More space at bottom */
+}
+
+#contact form {
+    max-width: 650px; /* Slightly wider form */
+    margin: 0 auto;
+    display: grid; /* Using grid for better alignment */
+    grid-template-columns: 1fr;
+    gap: 20px; /* Increased gap */
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+#contact input[type="text"],
+#contact input[type="email"],
+#contact textarea {
+    width: 100%;
+    padding: 18px; /* Increased padding */
+    border: 1px solid #ccc; /* Slightly darker border */
+    border-radius: 8px; /* More rounded inputs */
+    font-size: 1rem;
+    font-family: 'Open Sans', sans-serif;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#contact input[type="text"]:focus,
+#contact input[type="email"]:focus,
+#contact textarea:focus {
+    border-color: #e60012; /* Red border on focus */
+    box-shadow: 0 0 8px rgba(230, 0, 18, 0.2); /* Subtle red glow */
+    outline: none;
+}
+
+#contact textarea {
+    min-height: 160px; /* Slightly taller textarea */
+    resize: vertical;
+}
+
+#contact button[type="submit"].cta-button { /* Ensure CTA styles apply */
+    justify-self: center; /* Center button in grid layout */
+    width: auto; /* Allow button to size based on content */
+    padding: 15px 40px; /* Adjust padding */
+}
+
+footer {
+    background: #1a1a1a; /* Darker footer background */
+    color: #bbb; /* Lighter text for better contrast */
+    text-align: center;
+    padding: 30px 0; /* Increased padding */
+    font-size: 0.9rem;
+}
+
+/* Responsive Design Enhancements */
+@media (max-width: 992px) { /* Tablet breakpoint */
+    #hero h1 {
+        font-size: 3.5rem;
+    }
+    .product-item {
+        width: calc(50% - 20px); /* Two items per row */
+    }
+}
+
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+    }
+    nav .logo {
+        margin-bottom: 15px;
+    }
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        /* display: none; JS will handle toggle. Ensure it's initially hidden if using JS toggle */
+        /* For now, let's make it always visible for simplicity without JS toggle button yet */
+    }
+
+    nav ul li {
+        margin: 10px 0;
+        width: 100%;
+        text-align: center;
+    }
+    nav ul li a {
+        display: block; /* Make links full width for easier tapping */
+        padding: 10px;
+    }
+
+    /* Mobile menu toggle styling */
+    .menu-toggle {
+        display: none; /* Hidden by default, shown in media query */
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem; /* Larger icon */
+        cursor: pointer;
+        padding: 5px 10px;
+        z-index: 1005; /* Ensure it's above other header elements */
+        position: absolute; /* Position it relative to the header/nav */
+        top: 15px; /* Adjust as needed */
+        right: 20px; /* Adjust as needed */
+    }
+
+    @media (max-width: 768px) {
+        nav .logo { /* Ensure logo is not pushed by absolute positioned toggle */
+            position: relative;
+            z-index: 1;
+        }
+        .menu-toggle {
+            display: block; /* Show toggle on mobile */
+        }
+        nav ul {
+            display: none; /* Hide nav list by default */
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            background-color: #d10010; /* Slightly darker red for dropdown */
+            position: absolute;
+            top: 60px; /* Position below header (adjust based on header height) */
+            left: 0;
+            padding: 10px 0;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        nav ul.active {
+            display: flex; /* Show when .active class is added by JS */
+        }
+
+        nav ul li {
+            margin: 10px 0;
+            width: 100%;
+            text-align: center;
+        }
+        nav ul li a {
+            display: block;
+            padding: 12px; /* Larger tap area */
+            color: white;
+        }
+        nav ul li a:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: #fff; /* Keep text white on hover */
+        }
+        nav ul li a:hover::after { /* Mobile: hide desktop underline effect */
+            width: 0;
+        }
+
+
+        #hero h1 {
+        font-size: 2.8rem; /* Adjusted for mobile */
+    }
+
+    #hero p {
+        font-size: 1.1rem; /* Adjusted for mobile */
+        padding: 0 10px; /* Add some padding on mobile */
+    }
+
+    .product-showcase {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .product-item {
+        width: 90%; /* Wider items on mobile */
+        max-width: 350px;
+        margin-bottom: 20px; /* Space between stacked items */
+    }
+
+    #products h2, #history h2, #community h2, #contact h2 {
+        font-size: 2.2rem;
+    }
+
+    #contact form {
+        padding: 30px 20px;
+    }
+}
