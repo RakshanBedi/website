@@ -13,32 +13,108 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Hero Section Animations
-    // Wave animation is handled by CSS keyframes (.coke-wave and @keyframes waveScroll in style.css)
-    // Bubbles Animation
-    const bubblesContainer = document.querySelector('#hero .bubbles');
-    if (bubblesContainer) {
-        const numberOfBubbles = 30; // Reduced for performance, adjust as needed
-        for (let i = 0; i < numberOfBubbles; i++) {
-            const bubble = document.createElement('div');
-            bubble.classList.add('bubble');
+    // Hero Section Animations - New Particle System
+    const canvas = document.getElementById('particle-canvas');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let particles = [];
 
-            const size = Math.random() * 15 + 5; // Bubbles between 5px and 20px
-            bubble.style.width = `${size}px`;
-            bubble.style.height = `${size}px`;
-
-            bubble.style.left = `${Math.random() * 100}%`;
-
-            // Animation duration between 5s and 12s
-            const duration = Math.random() * 7 + 5;
-            bubble.style.animationDuration = `${duration}s`;
-
-            // Animation delay up to 5s
-            const delay = Math.random() * 5;
-            bubble.style.animationDelay = `${delay}s`;
-
-            bubblesContainer.appendChild(bubble);
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor(x, y, size, color, speedX, speedY) {
+                this.x = x;
+                this.y = y;
+                this.size = size;
+                this.color = color;
+                this.speedX = speedX;
+                this.speedY = speedY;
+                this.opacity = 1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.opacity -= 0.005; // Fade out slowly
+
+                // Bounce off edges or reappear
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1; // Bounce for now
+                 // Or reappear from top/bottom for a continuous flow effect:
+                // if (this.y < 0 - this.size || this.opacity <= 0) {
+                //    this.y = canvas.height + this.size;
+                //    this.x = Math.random() * canvas.width;
+                //    this.opacity = 1;
+                //    this.speedY = (Math.random() * 1 + 0.5) * -1; // Reset speed
+                // }
+
+            }
+
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1; // Reset globalAlpha
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const numberOfParticles = 80; // Slightly more particles for a richer feel with more colors
+            const baseColors = [
+                'rgba(230,0,18,0.7)',    // Coca-Cola Red
+                'rgba(255,255,255,0.3)', // White/Light Grey
+                'rgba(200,0,15,0.5)',    // Darker Red
+                'rgba(255,215,0,0.6)',   // Gold
+                'rgba(255,223,0,0.4)'    // Corrected Lighter Gold / More transparent gold (was 215, now 223 for slightly different shade)
+            ];
+
+            for (let i = 0; i < numberOfParticles; i++) {
+                const size = Math.random() * 2.5 + 0.5; // Particle size (0.5px to 3px)
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height; // Start particles all over the canvas
+                const color = baseColors[Math.floor(Math.random() * baseColors.length)]; // Corrected to use baseColors
+                const speedX = (Math.random() - 0.5) * 1; // Horizontal speed and direction
+                const speedY = (Math.random() - 0.5) * 1; // Vertical speed and direction (can be upwards or downwards)
+
+                particles.push(new Particle(x, y, size, color, speedX, speedY));
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                // Remove faded particles and add new ones for continuous effect
+                if (particles[i].opacity <= 0) {
+                    particles.splice(i, 1);
+                    i--; // Adjust index after removal
+
+                    // Add a new particle to replace the faded one
+                    const size = Math.random() * 3 + 1;
+                    const x = Math.random() * canvas.width;
+                    // const y = canvas.height + size; // Emerge from bottom
+                    const y = Math.random() * canvas.height; // Or appear randomly
+                    // Use the same baseColors array for consistency
+                    const color = baseColors[Math.floor(Math.random() * baseColors.length)];
+                    const speedX = (Math.random() - 0.5) * 0.8;
+                    const speedY = (Math.random() * 0.8 + 0.2) * (Math.random() < 0.5 ? 1 : -1); // Random up/down initial direction
+                    particles.push(new Particle(x, y, size, color, speedX, speedY));
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
     }
 
     // Interactive Navigation
@@ -107,22 +183,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // This can be complex and might require more advanced focus trapping logic.
     // For now, the ARIA attributes provide a good baseline.
 
+    // --- Scroll Animations ---
+    // Basic implementation for .animate-on-scroll elements
+    const scrollAnimatedElements = document.querySelectorAll('.animate-on-scroll');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                // Optional: Unobserve after animation to save resources
+                // observer.unobserve(entry.target);
+            } else {
+                // Optional: Remove class if you want animation to re-trigger on scroll up
+                // entry.target.classList.remove('is-visible');
+            }
+        });
+    }, {
+        threshold: 0.1 // Trigger when 10% of the element is visible
+    });
+
+    scrollAnimatedElements.forEach(el => {
+        observer.observe(el);
+    });
+
+
     // --- Advanced Animation Placeholders ---
     // Storytelling Animations (e.g., Parallax on scroll)
-    // This would require a scroll event listener and updating element positions/opacity.
-    // Example (very basic, recommend GSAP ScrollTrigger for production):
-    /*
-    window.addEventListener('scroll', () => {
-        const historySection = document.querySelector('#history');
-        if (historySection) {
-            const sectionTop = historySection.getBoundingClientRect().top;
-            const windowHeight = window.innerHeight;
-            if (sectionTop < windowHeight * 0.75) {
-                // Start animation for elements within #history
-            }
-        }
-    });
-    */
+    // The .animate-on-scroll provides a basic fade/slide in.
+    // For true parallax or more complex timeline animations, GSAP ScrollTrigger is recommended.
 
     // Product Rotation/Pouring Animations
     // For product item querySelectorAll('.product-item img')

@@ -6,27 +6,26 @@
 }
 
 body {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Added Open Sans as a more modern, playful alternative */
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     line-height: 1.6;
-    color: #2c2c2c; /* Slightly softer black for text */
-    background-color: #f8f8f8; /* Lighter grey for overall background */
-    -webkit-font-smoothing: antialiased; /* Smoother fonts on WebKit browsers */
-    -moz-osx-font-smoothing: grayscale; /* Smoother fonts on Firefox */
+    color: #f0f0f0; /* Light grey/white for text on dark background */
+    background-color: #1a1a1a; /* Very dark grey/near black background */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Google Font import moved to HTML for better performance */
-/* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700;900&family=Roboto:wght@900&display=swap'); */
 /* Roboto for very bold headings, Open Sans for body and other headings */
+/* Google Font import is in HTML */
 
 header {
-    background: #e60012; /* Official Coca-Cola Red */
-    color: #fff;
-    padding: 0.75rem 0; /* Slightly reduced padding */
+    background: #111111; /* Darker header, almost black */
+    color: #ffffff;
+    padding: 0.75rem 0;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(230, 0, 18, 0.3); /* Subtle red glow shadow */
 }
 
 nav {
@@ -39,9 +38,16 @@ nav {
 }
 
 nav .logo img {
-    height: 45px; /* Slightly adjusted logo size */
-    vertical-align: middle; /* Better alignment if text is next to it */
+    height: 45px;
+    vertical-align: middle;
+    transition: transform 0.3s ease, filter 0.3s ease; /* Added transitions for logo */
 }
+
+nav .logo img:hover {
+    transform: scale(1.05); /* Slight scale on hover */
+    filter: drop-shadow(0 0 5px rgba(230, 0, 18, 0.7)); /* Red glow on hover */
+}
+
 
 nav ul {
     list-style: none;
@@ -53,65 +59,109 @@ nav ul li {
 }
 
 nav ul li a {
-    color: #fff;
+    color: #f0f0f0;
     text-decoration: none;
-    font-weight: 700; /* Bolder nav links */
-    padding: 8px 15px; /* Increased padding for a better click area */
-    transition: color 0.3s ease, transform 0.3s ease; /* Added transform transition */
-    position: relative; /* For potential underline effects */
-    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 10px 15px; /* Slightly more padding */
+    transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease; /* Added background-color transition */
+    position: relative;
+    font-size: 1rem; /* Slightly larger nav link font */
+    border-radius: 5px; /* Rounded corners for potential background effect */
 }
 
 nav ul li a:hover {
-    color: #ffd700; /* Gold hover - example of a playful accent */
-    transform: translateY(-2px); /* Slight lift on hover */
+    color: #ffffff;
+    background-color: rgba(230, 0, 18, 0.3); /* Subtle red background on hover */
+    transform: translateY(-2px);
+    text-shadow: 0 0 5px rgba(255,255,255,0.5); /* Slight white text glow */
 }
 
-nav ul li a::after { /* Underline effect example */
+nav ul li a::after { /* More prominent underline */
     content: '';
     position: absolute;
     width: 0;
-    height: 2px;
-    bottom: -5px;
+    height: 3px; /* Thicker underline */
+    bottom: -8px; /* Further down */
     left: 50%;
     transform: translateX(-50%);
-    background-color: #ffd700;
-    transition: width 0.3s ease;
+    background-color: #ffd700; /* Gold color for underline */
+    transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 0 8px rgba(255,215,0,0.7); /* Gold glow */
 }
 
 nav ul li a:hover::after {
-    width: 70%; /* Underline appears on hover */
+    width: 85%; /* Wider underline on hover */
+}
+
+nav ul li a:hover {
+    color: #ffffff;
+    /* Keeping the subtle red background for now, as gold text on gold bg might be too much */
+    /* Or change to a very dark, almost transparent gold: rgba(255,215,0,0.1) */
+    background-color: rgba(230, 0, 18, 0.2); /* Slightly reduced red opacity */
+    transform: translateY(-2px);
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
 }
 
 /* Accessibility: Add visible focus styles for keyboard navigation */
 nav ul li a:focus, .cta-button:focus, .product-item:focus, #contact input:focus, #contact textarea:focus, .menu-toggle:focus {
-    outline: 2px solid #005fcc; /* A common visible focus indicator color */
+    outline: 2px solid #e60012; /* Coca-Cola Red for focus outline */
     outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(0, 95, 204, 0.3); /* Optional: a softer glow around the outline */
+    box-shadow: 0 0 0 4px rgba(230, 0, 18, 0.3); /* Red glow */
 }
-/* For elements where default outline might be an issue, like buttons with rounded corners, ensure outline-offset is used or border is used instead */
 .cta-button:focus {
     outline-offset: 3px;
 }
-/* Ensure high contrast for focus on dark backgrounds if needed */
-header .menu-toggle:focus { /* Example if toggle was on dark bg and needed different focus */
-    outline: 2px solid #fff;
+header .menu-toggle:focus {
+    outline: 2px solid #e60012; /* Red outline for toggle */
     outline-offset: 2px;
 }
 
 
 main {
-    padding-top: 80px; /* Adjust based on header height */
+    padding-top: 70px; /* Adjusted for potentially slimmer header */
 }
 
 section {
-    padding: 60px 20px;
+    padding: 80px 20px; /* Increased padding for more spacing */
     text-align: center;
+    position: relative; /* Needed for new separator */
+    /* border-bottom: 1px solid #333; Removed */
 }
 
+section:not(#hero)::after { /* New section separator for all sections except hero */
+    content: '';
+    position: absolute;
+    bottom: -10px; /* Position it slightly below the section padding */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px; /* Width of the separator element */
+    height: 5px; /* Thickness of the separator line */
+    background-color: #e60012; /* Coca-Cola Red */
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(230, 0, 18, 0.5); /* Red glow */
+}
+
+section:last-of-type::after { /* Remove separator from the very last section */
+    display: none;
+}
+
+
+/* Utility class for scroll animations (to be triggered by JS) */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.is-visible { /* Class to be added by JS */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
 #hero {
-    background-color: #fff; /* White background for hero */
-    color: #333;
+    background-color: #000000; /* Pitch black for hero */
+    color: #f0f0f0; /* Light text */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -126,204 +176,228 @@ section {
 }
 
 #hero h1 {
-    font-family: 'Roboto', sans-serif; /* Using Roboto for impactful hero heading */
-    font-size: 4.5rem; /* Larger font size */
-    color: #e60012; /* Official Coca-Cola Red */
-    margin-bottom: 15px; /* Reduced margin */
+    font-family: 'Roboto', sans-serif;
+    font-size: 5rem; /* Even larger for dark theme impact */
+    color: #e60012; /* Coca-Cola Red */
+    margin-bottom: 20px;
     font-weight: 900;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1); /* Subtle text shadow */
+    text-shadow: 0 0 15px rgba(230, 0, 18, 0.5), 0 0 5px rgba(255, 255, 255, 0.3); /* Red glow and subtle white highlight */
     line-height: 1.1;
+    letter-spacing: 1px; /* Added letter-spacing */
 }
 
 #hero p {
-    font-size: 1.3rem; /* Slightly smaller, more refined paragraph */
-    margin-bottom: 35px; /* Increased margin for button spacing */
-    color: #555; /* Darker grey for better readability */
-    max-width: 600px; /* Limit width for better readability */
+    font-size: 1.4rem; /* Slightly larger for readability */
+    margin-bottom: 40px;
+    color: #cccccc; /* Lighter grey for paragraph */
+    max-width: 650px;
 }
 
 .cta-button {
-    background-color: #e60012; /* Official Coca-Cola Red */
-    color: #fff;
-    padding: 15px 30px;
+    background-color: #e60012; /* Coca-Cola Red */
+    color: #ffffff;
+    padding: 18px 35px; /* Larger padding */
     text-decoration: none;
-    font-size: 1.2rem;
-    border-radius: 50px; /* More playful, rounded button */
-    border: none;
+    font-size: 1.25rem; /* Slightly larger font */
+    font-weight: 700;
+    border-radius: 50px;
+    border: 2px solid #e60012; /* Red border */
     cursor: pointer;
-    transition: transform 0.3s ease, background-color 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(230, 0, 18, 0.3); /* Red glow shadow */
 }
 
 .cta-button:hover {
-    background-color: #c0000f; /* Slightly darker red on hover */
-    transform: scale(1.08) perspective(1px); /* Enhanced zoom effect, perspective for smoothness */
-    box-shadow: 0 6px 15px rgba(0,0,0,0.25); /* Increased shadow on hover */
+    background-color: #ffffff; /* White background on hover */
+    color: #e60012; /* Red text on hover */
+    transform: scale(1.1) perspective(1px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3); /* White glow on hover */
+}
+.cta-button:active { /* Added active state for more feedback */
+    transform: scale(1.05) perspective(1px); /* Slightly smaller scale than hover during press */
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
 }
 
-/* Coke Wave and Bubbles - CSS for structure and basic animation hooks */
-.coke-wave {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 200%; /* Double width for seamless scroll */
-    height: 100px; /* Adjusted height */
-    background: url('https://svgshare.com/i/184m.svg') repeat-x; /* Example SVG wave, make sure it's tileable */
-    background-size: 50% 100px; /* Tile two waves */
-    z-index: 1;
-    animation: waveScroll 15s linear infinite; /* CSS animation */
-    opacity: 0.8;
-    will-change: transform; /* Performance hint */
-}
 
-@keyframes waveScroll {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%); /* Scrolls one full width of the original image */
-    }
-}
+/* Removed .coke-wave and .bubble styles as they are replaced by canvas particles */
 
-.bubbles {
+#particle-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden; /* Contain bubbles within hero */
-}
-
-.bubble { /* Styling for individual bubbles created by JS */
-    position: absolute;
-    bottom: -30px; /* Start from below */
-    background-color: rgba(229, 0, 18, 0.3); /* Light red bubbles */
-    border-radius: 50%;
-    opacity: 0; /* Start invisible, fade in with animation */
-    animation: rise 8s linear infinite; /* JS will set random duration/delay */
-    box-shadow: 0 0 5px rgba(229, 0, 18, 0.5);
-    will-change: transform, opacity; /* Performance hint */
-}
-
-@keyframes rise {
-    0% {
-        transform: translateY(0) scale(0.8);
-        opacity: 0;
-    }
-    10%, 90% { /* Fade in and out during the middle of animation */
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-105vh) scale(1.2); /* Rise above viewport and grow slightly */
-        opacity: 0;
-    }
+    z-index: 0; /* Behind hero-content */
+    pointer-events: none; /* Allow clicks through canvas */
 }
 
 
-#products {
-    background-color: #ffffff; /* Cleaner white background */
-    border-top: 1px solid #eee; /* Subtle separator */
+#products, #history, #community, #contact {
+    background-color: #111111; /* Dark background for sections */
+    /* border-top: 1px solid #222; */ /* Darker separator if needed, or remove for seamless */
 }
+#products { /* First section after hero might not need top border if hero is pitch black */
+    border-top: none;
+}
+
 
 #products h2, #history h2, #community h2, #contact h2 {
     font-family: 'Open Sans', sans-serif;
-    font-size: 2.8rem; /* Slightly larger section titles */
-    color: #e60012; /* Official Coca-Cola Red */
-    margin-bottom: 50px; /* Increased margin */
-    font-weight: 900; /* Bolder section titles */
+    font-size: 3rem; /* Slightly larger section titles for dark theme */
+    color: #e60012; /* Coca-Cola Red accent */
+    margin-bottom: 60px; /* Increased margin */
+    font-weight: 900;
     position: relative;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
+    text-shadow: 0 0 10px rgba(230,0,18,0.3);
+    letter-spacing: 0.5px; /* Added letter-spacing */
 }
 
-/* Underline effect for section titles */
 #products h2::after, #history h2::after, #community h2::after, #contact h2::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background-color: #e60012;
-    border-radius: 2px;
+    width: 100px; /* Wider underline */
+    height: 5px; /* Thicker underline */
+    background-color: #e60012; /* Default red */
+    border-radius: 3px;
+    box-shadow: 0 0 8px rgba(230,0,18,0.5); /* Default red glow */
+}
+
+/* Gold accent for History section title underline */
+#history h2::after {
+    background-color: #ffd700; /* Gold color */
+    box-shadow: 0 0 10px rgba(255,215,0,0.7); /* Gold glow */
 }
 
 
 .product-showcase {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 40px; /* Increased gap */
     flex-wrap: wrap;
 }
 
 .product-item {
-    background: #fff;
-    padding: 25px; /* Increased padding */
-    border-radius: 12px; /* More rounded corners */
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08); /* Softer, more diffused shadow */
-    width: 280px; /* Slightly wider items */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
-    text-align: center; /* Center content within product item */
+    background: #222222; /* Darker card background */
+    color: #f0f0f0; /* Light text on card */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4), 0 0 10px rgba(230,0,18,0.2) inset; /* Outer shadow and subtle inner red glow */
+    width: 300px;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    text-align: center;
+    border: 1px solid #333;
+    position: relative; /* For pseudo-elements if needed for click effect */
+    overflow: hidden; /* For ripple/shine effects */
 }
+
+.product-item::after { /* Glint/shine pseudo-element */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%; /* Start off-screen to the left */
+    width: 70%; /* Width of the shine */
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%, /* Shine color and opacity */
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg); /* Angle the shine */
+    transition: left 0.6s ease-in-out;
+}
+
+.product-item:hover::after {
+    left: 150%; /* Move shine across the card to the right */
+}
+
 
 .product-item:hover {
-    transform: translateY(-12px) scale(1.02); /* More pronounced hover effect */
-    box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+    transform: translateY(-15px) scale(1.03);
+    box-shadow: 0 15px 35px rgba(230,0,18,0.3), 0 0 15px rgba(230,0,18,0.3) inset; /* Stronger red glow on hover */
 }
 
+/* Creative click effect for product items */
+.product-item.product-item-clicked::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: rgba(230, 0, 18, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: clickRipple 0.6s ease-out;
+}
+
+@keyframes clickRipple {
+    to {
+        width: 300px; /* Adjust to be larger than the item */
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+
 .product-item img {
-    max-width: 80%; /* Control image size better */
+    max-width: 75%;
     height: auto;
-    margin-bottom: 20px; /* Increased margin */
-    transition: transform 0.3s ease; /* Animation for image */
+    margin-bottom: 25px;
+    transition: transform 0.4s ease;
+    filter: brightness(1.1); /* Slightly brighter product images */
 }
 
 .product-item:hover img {
-    transform: scale(1.05); /* Slight zoom on image hover */
+    transform: scale(1.1);
 }
 
 .product-item h3 {
-    font-size: 1.3rem; /* Larger product title */
-    color: #333;
+    font-size: 1.4rem;
+    color: #ffffff; /* Pure white for product titles */
     font-weight: 700;
 }
 
+/* Specific section background adjustments if needed */
 #history {
-    background-color: #f8f8f8; /* Consistent light grey */
+     background-color: #0a0a0a; /* Slightly different dark for variation */
+}
+#community {
+    /* background-color: #111; */ /* Keep consistent or vary */
 }
 
-#community {
-    background-color: #ffffff; /* White for contrast */
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
-}
 
 #contact {
-    background-color: #f0f0f0; /* Light grey for contact section */
-    padding-bottom: 80px; /* More space at bottom */
+    /* background-color: #111; */
+    padding-bottom: 100px;
 }
 
 #contact form {
-    max-width: 650px; /* Slightly wider form */
+    max-width: 700px;
     margin: 0 auto;
-    display: grid; /* Using grid for better alignment */
+    display: grid;
     grid-template-columns: 1fr;
-    gap: 20px; /* Increased gap */
-    background: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    gap: 25px;
+    background: #1c1c1c; /* Dark form background */
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    border: 1px solid #333;
 }
 
 #contact input[type="text"],
 #contact input[type="email"],
 #contact textarea {
     width: 100%;
-    padding: 18px; /* Increased padding */
-    border: 1px solid #ccc; /* Slightly darker border */
-    border-radius: 8px; /* More rounded inputs */
+    padding: 20px;
+    border: 1px solid #8c000a; /* Dark Red border for inputs - Accessibility enhancement */
+    background-color: #2a2a2a; /* Dark input background */
+    color: #f0f0f0; /* Light text in inputs */
+    border-radius: 8px;
     font-size: 1rem;
     font-family: 'Open Sans', sans-serif;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -333,24 +407,25 @@ section {
 #contact input[type="email"]:focus,
 #contact textarea:focus {
     border-color: #e60012; /* Red border on focus */
-    box-shadow: 0 0 8px rgba(230, 0, 18, 0.2); /* Subtle red glow */
+    background-color: #333333; /* Slightly lighter on focus */
+    box-shadow: 0 0 10px rgba(230, 0, 18, 0.4); /* Red glow */
     outline: none;
 }
 
 #contact textarea {
-    min-height: 160px; /* Slightly taller textarea */
+    min-height: 180px;
     resize: vertical;
 }
 
-#contact button[type="submit"].cta-button { /* Ensure CTA styles apply */
-    justify-self: center; /* Center button in grid layout */
-    width: auto; /* Allow button to size based on content */
-    padding: 15px 40px; /* Adjust padding */
+#contact button[type="submit"].cta-button {
+    justify-self: center;
+    width: auto;
+    padding: 18px 45px;
 }
 
 footer {
-    background: #1a1a1a; /* Darker footer background */
-    color: #bbb; /* Lighter text for better contrast */
+    background: #000000; /* Pitch black footer */
+    color: #aaaaaa; /* Slightly lighter grey for footer text */
     text-align: center;
     padding: 30px 0; /* Increased padding */
     font-size: 0.9rem;
@@ -394,43 +469,44 @@ footer {
 
     /* Mobile menu toggle styling */
     .menu-toggle {
-        display: none; /* Hidden by default, shown in media query */
+        display: none;
         background: none;
         border: none;
-        color: white;
-        font-size: 2rem; /* Larger icon */
+        color: #f0f0f0; /* Light color for toggle on dark header */
+        font-size: 2rem;
         cursor: pointer;
         padding: 5px 10px;
-        z-index: 1005; /* Ensure it's above other header elements */
-        position: absolute; /* Position it relative to the header/nav */
-        top: 15px; /* Adjust as needed */
-        right: 20px; /* Adjust as needed */
+        z-index: 1005;
+        position: absolute;
+        top: 15px;
+        right: 20px;
     }
 
     @media (max-width: 768px) {
-        nav .logo { /* Ensure logo is not pushed by absolute positioned toggle */
+        nav .logo {
             position: relative;
             z-index: 1;
         }
         .menu-toggle {
-            display: block; /* Show toggle on mobile */
+            display: block;
         }
         nav ul {
-            display: none; /* Hide nav list by default */
+            display: none;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            background-color: #d10010; /* Slightly darker red for dropdown */
+            background-color: #111111; /* Dark background for mobile menu */
             position: absolute;
-            top: 60px; /* Position below header (adjust based on header height) */
+            top: 60px; /* Adjust based on actual header height with new padding */
             left: 0;
             padding: 10px 0;
-            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5); /* Stronger shadow for dark theme */
             z-index: 1000;
+            border-bottom: 2px solid #e60012; /* Red accent border */
         }
 
         nav ul.active {
-            display: flex; /* Show when .active class is added by JS */
+            display: flex;
         }
 
         nav ul li {
@@ -440,16 +516,35 @@ footer {
         }
         nav ul li a {
             display: block;
-            padding: 12px; /* Larger tap area */
-            color: white;
+            padding: 12px;
+            color: #f0f0f0; /* Light text for mobile nav links */
         }
         nav ul li a:hover {
-            background-color: rgba(255,255,255,0.1);
-            color: #fff; /* Keep text white on hover */
+            background-color: #e60012; /* Red background on hover */
+            color: #ffffff;
+            transform: scale(1.05); /* Add slight scale for mobile tap feedback */
         }
-        nav ul li a:hover::after { /* Mobile: hide desktop underline effect */
+        nav ul li a:hover::after {
             width: 0;
         }
+
+        /* Style for the mobile menu items appearing */
+        nav ul.active li {
+            opacity: 0;
+            animation: fadeInNavItems 0.3s ease-out forwards;
+        }
+
+        @keyframes fadeInNavItems {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Stagger animation for list items */
+        nav ul.active li:nth-child(1) { animation-delay: 0.1s; }
+        nav ul.active li:nth-child(2) { animation-delay: 0.15s; }
+        nav ul.active li:nth-child(3) { animation-delay: 0.2s; }
+        nav ul.active li:nth-child(4) { animation-delay: 0.25s; }
+        nav ul.active li:nth-child(5) { animation-delay: 0.3s; }
 
 
         #hero h1 {
