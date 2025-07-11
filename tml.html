@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savory Haven | Modern Dining Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e63946;
+            --secondary: #f1faee;
+            --accent: #457b9d;
+            --dark: #1d3557;
+            --light: #a8dadc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s ease;
+            background-blend-mode: overlay;
+            background-color: rgba(255, 253, 248, 0.9);
+        }
+
+        .dark-mode {
+            background-color: #121212;
+            color: #f5f5f5;
+        }
+        
+        .bg-neutral-50 {
+            background-color: #fafafa;
+        }
+
+        .menu-item {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .menu-item:hover {
+            transform: perspective(1000px) rotateY(10deg) scale(1.03);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .dish-card {
+            perspective: 1000px;
+        }
+
+        .dish-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .dish-card:hover .dish-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .dish-card-front, .dish-card-back {
+            backface-visibility: hidden;
+        }
+
+        .dish-card-back {
+            transform: rotateY(180deg);
+        }
+
+        .reservation-form {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .virtual-tour {
+            height: 500px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
+        }
+
+        .chef-card:hover .chef-overlay {
+            opacity: 1;
+        }
+
+        .chef-overlay {
+            transition: opacity 0.3s ease;
+        }
+
+        /* Responsive adjustments for review cards */
+        .review-card {
+            min-width: 100%; /* Default to full width on small screens */
+        }
+
+        @media (min-width: 768px) { /* md breakpoint */
+            .review-card {
+                min-width: 50%; /* Show two cards on medium screens */
+            }
+        }
+
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .review-card {
+                min-width: 33.3333%; /* Show three cards on large screens */
+            }
+        }
+
+        .special-badge {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-[url('https://example.com/soft-texture.jpg')] bg-cover bg-fixed">
+    <!-- Header with Navigation -->
+    <header class="sticky top-0 z-50 bg-neutral-50 shadow-md dark:bg-gray-900">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/26624e15-d4b1-48f1-aace-a6fbaf4ce58c.png" alt="Savory Haven restaurant logo featuring a minimalist fork and knife design with warm orange accents" class="h-12">
+                <h1 class="ml-2 text-2xl font-bold text-gray-800 dark:text-white">Savory Haven</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-8" id="desktop-nav">
+                <a href="#home" class="text-gray-800 hover:text-var(--primary) dark:text-gray-300 dark:hover:text-white transition">Home</a>
+                <a href="#menu" class="text-gray-800 hover:text-var(--primary) dark:text-gray-300 dark:hover:text-white transition">Menu</a>
+                <a href="#reservations" class="text-gray-800 hover:text-var(--primary) dark:text-gray-300 dark:hover:text-white transition">Reservations</a>
+                <a href="#chefs" class="text-gray-800 hover:text-var(--primary) dark:text-gray-300 dark:hover:text-white transition">Our Chefs</a>
+                <a href="#contact" class="text-gray-800 hover:text-var(--primary) dark:text-gray-300 dark:hover:text-white transition">Contact</a>
+            </nav>
+            
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block text-yellow-300"></i>
+                </button>
+                <button id="mobile-menu-button" class="md:hidden text-gray-800 dark:text-white">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu (initially hidden) -->
+        <nav id="mobile-menu" class="md:hidden bg-neutral-50 dark:bg-gray-900 py-4 px-4 hidden">
+            <a href="#home" class="block py-2 text-gray-800 hover:text-var(--primary) dark:text-gray-300 dark:hover:text-white transition">Home</a>
+            <a href="#menu" class="block py-2 text-gray-800 hover:text-var(--primary) dark:text-gray-300 dark:hover:text-white transition">Menu</a>
+            <a href="#reservations" class="block py-2 text-gray-800 hover:text-var(--primary) dark:text-gray-300 dark:hover:text-white transition">Reservations</a>
+            <a href="#chefs" class="block py-2 text-gray-800 hover:text-var(--primary) dark:text-gray-300 dark:hover:text-white transition">Our Chefs</a>
+            <a href="#contact" class="block py-2 text-gray-800 hover:text-var(--primary) dark:text-gray-300 dark:hover:text-white transition">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center bg-gray-900 overflow-hidden">
+        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8938e451-0b8a-48ac-83bb-85757866702a.png" alt="Elegant restaurant interior with warm lighting, wooden tables, and modern decor" class="absolute inset-0 w-full h-full object-cover opacity-70">
+        
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 animate-fadeIn">Savory Haven</h1>
+            <p class="text-xl md:text-2xl text-white mb-8 max-w-2xl mx-auto">Where culinary artistry meets unforgettable dining experiences</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#reservations" class="bg-var(--primary) hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full transition transform hover:scale-105">
+                    Reserve a Table
+                </a>
+                <a href="#menu" class="bg-transparent border-2 border-white hover:bg-white hover:text-gray-900 text-white font-bold py-3 px-6 rounded-full transition transform hover:scale-105">
+                    Explore Menu
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-0 right-0 flex justify-center">
+            <a href="#about" class="text-white animate-bounce">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-[#f8f5f0]/90 dark:bg-gray-800/90 backdrop-blur-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0 md:pr-10">
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">Our Story</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        Founded in 2010, Savory Haven began as a small bistro with a passion for farm-to-table cuisine. 
+                        Today, we've grown into a culinary destination known for our innovative dishes and warm hospitality.
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        Our philosophy is simple: source the finest ingredients, let their natural flavors shine, 
+                        and create dishes that tell a story with every bite.
+                    </p>
+                    <div class="flex items-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/757a06c2-4888-440c-823f-64d83f37f0b1.png" alt="Chef Marco preparing a dish with fresh herbs" class="rounded-full h-16 w-16 object-cover mr-4">
+                        <div>
+                            <p class="font-semibold text-gray-800 dark:text-white">Chef Marco</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Head Chef & Founder</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 relative">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="h-64 bg-gray-200 rounded-lg overflow-hidden">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/850647ca-b9a0-4eba-bb9f-e42e17603820.png" alt="Chefs working together in an open kitchen with fresh ingredients" class="w-full h-full object-cover">
+                        </div>
+                        <div class="h-64 bg-gray-200 rounded-lg overflow-hidden">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/549f2797-3765-4048-a1b7-4faa25cb4aed.png" alt="Fresh vegetables and herbs arranged artistically on a wooden table" class="w-full h-full object-cover">
+                        </div>
+                        <div class="h-64 bg-gray-200 rounded-lg overflow-hidden">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/da9ff95d-166e-4674-86f9-cf3cced4f966.png" alt="Customers enjoying meals in our elegant dining room" class="w-full h-full object-cover">
+                        </div>
+                        <div class="h-64 bg-gray-200 rounded-lg overflow-hidden">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9ca28884-f78e-430c-b04e-877a52fdc3e5.png" alt="Signature dish plated beautifully with edible flowers" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-20 -right-9 bg-var(--primary) text-white px-6 py-3 rounded-lg shadow-lg">
+                        <p class="font-bold">15+ Years</p>
+                        <p class="text-sm">of Culinary Excellence</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">Our Menu</h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Discover our seasonal offerings crafted with locally-sourced ingredients and global inspiration
+                </p>
+            </div>
+            
+            <div class="flex justify-center mb-10 overflow-x-auto pb-4"> <!-- Added overflow-x-auto and pb-4 for scrollable categories on small screens -->
+                <div class="inline-flex rounded-md shadow-sm">
+                    <button class="menu-category px-4 py-2 text-sm font-medium rounded-l-lg bg-var(--primary) text-white whitespace-nowrap" data-category="all">
+                        All Items
+                    </button>
+                    <button class="menu-category px-4 py-2 text-sm font-medium bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white whitespace-nowrap" data-category="starters">
+                        Starters
+                    </button>
+                    <button class="menu-category px-4 py-2 text-sm font-medium bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white whitespace-nowrap" data-category="mains">
+                        Main Course
+                    </button>
+                    <button class="menu-category px-4 py-2 text-sm font-medium bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white whitespace-nowrap" data-category="dessert">
+                        Desserts
+                    </button>
+                    <button class="menu-category px-4 py-2 text-sm font-medium bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white whitespace-nowrap" data-category="soups">
+                        Soups
+                    </button>
+                    <button class="menu-category px-4 py-2 text-sm font-medium  bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white whitespace-nowrap" data-category="rice">
+                        Rice & Biryani
+                    </button>
+                    <button class="menu-category px-4 py-2 text-sm font-medium bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white whitespace-nowrap" data-category="continental">
+                        Continental / Italian
+                    </button>
+                    <button class="menu-category px-4 py-2 text-sm font-medium rounded-r-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white whitespace-nowrap" data-category="beverages">
+                         Beverages
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" id="menu-items-container"> <!-- Changed md:grid-cols-2 to sm:grid-cols-2 -->
+                <!-- Menu items will be dynamically loaded here -->
+            </div>
+            
+            <div class="text-center mt-12">
+                <button id="load-more" class="px-6 py-3 border-2 border-var(--primary) text-var(--primary) dark:text-white dark:border-white font-semibold rounded-full hover:bg-var(--primary) hover:text-white dark:hover:bg-white dark:hover:text-gray-900 transition">
+                    View Full Menu
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specials Section -->
+    <section class="py-16 bg-gray-100 dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <div class="inline-block mb-4">
+                    <span class="special-badge px-4 py-2 bg-var(--primary) text-white rounded-full text-sm font-semibold">
+                        Today's Specials
+                    </span>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Chef's Recommendations</h2>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8"> <!-- Changed md:grid-cols-3 to sm:grid-cols-2 md:grid-cols-3 -->
+                <div class="dish-card bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg">
+                    <div class="dish-card-inner relative">
+                        <div class="dish-card-front">
+                            <div class="h-48 bg-gray-200 overflow-hidden">
+                                <img src="https://media.istockphoto.com/id/1337227030/photo/hand-rolled-four-cheese-ravioli-pasta-in-minced-beef-with-chianti-red-wine-garlic-and-herb.jpg?s=612x612&w=0&k=20&c=sIhE4nGvoiDknWtU9NS4d7lqr3PeTkbo3xIt7npMs3Y=" alt="Truffle-infused wild mushroom risotto with parmesan crisp garnish" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Butter Chicken Lasagna</h3>
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">An Indo-Italian fusion of creamy butter chicken layered with pasta sheets and cheese, baked to perfection</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-var(--primary) font-bold">$24</span>
+                                    <button class="view-details text-sm text-gray-500 dark:text-gray-400 hover:text-var(--primary) dark:hover:text-white">
+                                        View Details <i class="fas fa-chevron-right ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dish-card-back absolute inset-0 bg-var(--primary) text-white p-6 flex flex-col justify-center">
+                            <h3 class="text-xl font-bold mb-4">Butter Chicken Lasagna</h3>
+                            <p class="mb-4">Ingredients: Boneless chicken ,Tomato cream gravy , Fresh pasta sheets , Mozzarella & cheddar cheese , Butter , garlic , and Indian spices</p>
+                            <p class="text-sm italic">"Where Italy meets India — creamy, spicy, and soul-satisfying!" - Chef Marco</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dish-card bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg">
+                    <div class="dish-card-inner relative">
+                        <div class="dish-card-front">
+                            <div class="h-48 bg-gray-200 overflow-hidden">
+                                <img src="https://media.istockphoto.com/id/1458028535/photo/fried-mushrooms-with-mint-and-tomato-sauces-and-vegetables.webp?a=1&b=1&s=612x612&w=0&k=20&c=HklcQGmsYHmdIawFr1Y-UDndg4qWs7yMzXRhU5RoUcI=" alt="Juicy mushrooms stuffed with spiced paneer and herbs, chargrilled in a clay oven" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Tandoori Stuffed Mushroom</h3>
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">Juicy mushrooms stuffed with spiced paneer and herbs, chargrilled in a clay oven</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-var(--primary) font-bold">$36</span>
+                                    <button class="view-details text-sm text-gray-500 dark:text-gray-400 hover:text-var(--primary) dark:hover:text-white">
+                                        View Details <i class="fas fa-chevron-right ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dish-card-back absolute inset-0 bg-var(--primary) text-white p-6 flex flex-col justify-center">
+                            <h3 class="text-xl font-bold mb-4">Tandoori Stuffed Mushroom</h3>
+                            <p class="mb-4">Ingredients: Button mushrooms , Paneer (cottage cheese) , Green chili and coriander , Hung curd marinade , Tandoori masala and mustard oil</p>
+                            <p class="text-sm italic">"Grilled with love, stuffed with flavor — every bite is a surprise!" - Chef Elena</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dish-card bg-white dark:bg-gray-700 rounded-lg overflow-hidden shadow-lg">
+                    <div class="dish-card-inner relative">
+                        <div class="dish-card-front">
+                            <div class="h-48 bg-gray-200 overflow-hidden">
+                                <img src="https://media.istockphoto.com/id/504338599/photo/tender-beef-nihari.webp?a=1&b=1&s=612x612&w=0&k=20&c=3cGYJoHYdLWri5vpqJGzPzuEMlmn2Yk8cyM65cumJbw=" alt="Lavender crème brûlée with fresh berries and edible flowers" class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Nalli Nihari</h3>
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">A slow-cooked Mughlai lamb shank curry simmered overnight with aromatic spices and served with khameeri roti</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-var(--primary) font-bold">$12</span>
+                                    <button class="view-details text-sm text-gray-500 dark:text-gray-400 hover:text-var(--primary) dark:hover:text-white">
+                                        View Details <i class="fas fa-chevron-right ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dish-card-back absolute inset-0 bg-var(--primary) text-white p-6 flex flex-col justify-center">
+                            <h3 class="text-xl font-bold mb-4">Nalli Nihari</h3>
+                            <p class="mb-4">Ingredients:Lamb shanks , Ginger-garlic paste , Onions and yogurt , Traditional nihari masala , Cardamom , cloves , cinnamon , Wheat flour , Khameeri roti  </p>
+                            <p class="text-sm italic">"A royal recipe that takes time — but delivers unmatched depth and warmth in every bite." - Pastry Chef Sophie</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Virtual Tour Section -->
+    <section class="virtual-tour relative flex items-center justify-center bg-gray-900">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/DPp9EVWQHwQ?si=JqhVB860Zs-1DK5n&amp;controls=0"  title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        
+        <div class="relative z-10 text-center px-4">
+            <h2 class="text-4xl font-bold text-white mb-6">Virtual Tour</h2>
+            <p class="text-xl text-white mb-8 max-w-2xl mx-auto">Explore our elegant dining spaces before your visit</p>
+            <button id="start-tour" class="bg-white text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-gray-200 transition flex items-center mx-auto">
+                <i class="fas fa-vr-cardboard mr-2"></i> Start 360° Tour
+            </button>
+        </div>
+        
+        <div class="absolute bottom-6 right-6 flex space-x-4">
+            <button class="bg-white bg-opacity-30 text-white p-3 rounded-full hover:bg-opacity-50 transition">
+                <i class="fas fa-expand"></i>
+            </button>
+            <button class="bg-white bg-opacity-30 text-white p-3 rounded-full hover:bg-opacity-50 transition">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+    </section>
+
+    <!-- Chefs Section -->
+    <section id="chefs" class="py-20 bg-white dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">Meet Our Chefs</h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Our talented culinary team brings diverse experiences and shared passion to every dish
+                </p>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8"> <!-- Changed md:grid-cols-2 to sm:grid-cols-2 -->
+                <div class="chef-card relative rounded-lg overflow-hidden shadow-lg">
+                    <div class="h-80 bg-gray-200 overflow-hidden">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6d019abf-dd35-43f8-b35a-e92dcd84e6e6.png" alt="Head Chef Marco in kitchen whites holding a chef's knife" class="w-full h-full object-cover">
+                    </div>
+                    <div class="chef-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 flex items-end p-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Marco Bianchi</h3>
+                            <p class="text-white mb-4">Head Chef & Founder</p>
+                            <div class="flex space-x-4">
+                                <a href="#" class="text-white hover:text-var(--primary) transition">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="text-white hover:text-var(--primary) transition">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-4">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Marco Bianchi</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Italian Cuisine Specialist</p>
+                    </div>
+                </div>
+                
+                <div class="chef-card relative rounded-lg overflow-hidden shadow-lg">
+                    <div class="h-80 bg-gray-200 overflow-hidden">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7e5ab045-6119-4a0e-ac47-99a09399aa00.png" alt="Sous Chef Elena preparing seafood with precision" class="w-full h-full object-cover">
+                    </div>
+                    <div class="chef-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 flex items-end p-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Elena Petrov</h3>
+                            <p class="text-white mb-4">Sous Chef</p>
+                            <div class="flex space-x-4">
+                                <a href="#" class="text-white hover:text-var(--primary) transition">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="text-white hover:text-var(--primary) transition">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-4">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Elena Petrov</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Seafood & Russian Cuisine</p>
+                    </div>
+                </div>
+                
+                <div class="chef-card relative rounded-lg overflow-hidden shadow-lg">
+                    <div class="h-80 bg-gray-200 overflow-hidden">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/ea7c5e68-c3e3-4761-90ea-78a77fbe125b.png" alt="Pastry Chef Sophie decorating a cake with edible flowers" class="w-full h-full object-cover">
+                    </div>
+                    <div class="chef-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 flex items-end p-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Sophie Laurent</h3>
+                            <p class="text-white mb-4">Pastry Chef</p>
+                            <div class="flex space-x-4">
+                                <a href="#" class="text-white hover:text-var(--primary) transition">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="text-white hover:text-var(--primary) transition">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-4">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Sophie Laurent</h3>
+                        <p class="text-gray-600 dark:text-gray-400">French Pastry Specialist</p>
+                    </div>
+                </div>
+                
+                <div class="chef-card relative rounded-lg overflow-hidden shadow-lg">
+                    <div class="h-80 bg-gray-200 overflow-hidden">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/84fd234b-e3fc-451f-9f4f-1518b638f945.png" alt="Chef Raj preparing spices for an Indian-inspired dish" class="w-full h-full object-cover">
+                    </div>
+                    <div class="chef-overlay absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 flex items-end p-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-2">Raj Patel</h3>
+                            <p class="text-white mb-4">Sauce Chef</p>
+                            <div class="flex space-x-4">
+                                <a href="#" class="text-white hover:text-var(--primary) transition">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="text-white hover:text-var(--primary) transition">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-4">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white">Raj Patel</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Indian & Fusion Cuisine</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-gray-100 dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">What Our Guests Say</h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Don't just take our word for it - hear from our valued customers
+                </p>
+            </div>
+            
+            <div class="relative">
+                <div class="overflow-hidden">
+                    <div id="reviews-carousel" class="flex transition-transform duration-300">
+                        <!-- Reviews will be added dynamically -->
+                    </div>
+                </div>
+                
+                <button id="prev-review" class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 bg-white dark:bg-gray-700 p-3 rounded-full shadow-md hover:bg-gray-200 dark:hover:bg-gray-600 transition z-10"> <!-- Added z-10 -->
+                    <i class="fas fa-chevron-left text-gray-800 dark:text-white"></i>
+                </button>
+                
+                <button id="next-review" class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 bg-white dark:bg-gray-700 p-3 rounded-full shadow-md hover:bg-gray-200 dark:hover:bg-gray-600 transition z-10"> <!-- Added z-10 -->
+                    <i class="fas fa-chevron-right text-gray-800 dark:text-white"></i>
+                </button>
+            </div>
+            
+            <div class="flex justify-center mt-8 space-x-2">
+                <button class="review-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600" data-index="0"></button>
+                <button class="review-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600" data-index="1"></button>
+                <button class="review-dot w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600" data-index="2"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservations Section -->
+    <section id="reservations" class="py-20 bg-white dark:bg-gray-900">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden">
+                <div class="md:flex">
+                    <div class="md:w-1/2 bg-var(--primary) text-white p-10 flex flex-col justify-center">
+                        <h2 class="text-3xl font-bold mb-6">Make a Reservation</h2>
+                        <p class="mb-6">Reserve your table online and we'll confirm your booking within 30 minutes</p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-phone-alt mr-4"></i>
+                                <div>
+                                    <p class="font-semibold">Phone Reservations</p>
+                                    <p>+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-4"></i>
+                                <div>
+                                    <p class="font-semibold">Opening Hours</p>
+                                    <p>Monday - Sunday: 11:00 AM - 11:00 PM</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt mr-4"></i>
+                                <div>
+                                    <p class="font-semibold">Location</p>
+                                    <p>123 Culinary Avenue, Foodie District</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="md:w-1/2 p-10">
+                        <form id="reservation-form" class="reservation-form">
+                            <div class="mb-6">
+                                <label for="name" class="block text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
+                                <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white" required>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="email" class="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white" required>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="phone" class="block text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white" required>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6"> <!-- Changed grid-cols-2 to grid-cols-1 sm:grid-cols-2 -->
+                                <div>
+                                    <label for="date" class="block text-gray-700 dark:text-gray-300 mb-2">Date</label>
+                                    <input type="date" id="date" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white" required>
+                                </div>
+                                <div>
+                                    <label for="time" class="block text-gray-700 dark:text-gray-300 mb-2">Time</label>
+                                    <select id="time" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white" required>
+                                        <option value="">Select Time</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="11:30">11:30 AM</option>
+                                        <option value="12:00">12:00 PM</option>
+                                        <option value="12:30">12:30 PM</option>
+                                        <option value="13:00">1:00 PM</option>
+                                        <option value="13:30">1:30 PM</option>
+                                        <option value="17:00">5:00 PM</option>
+                                        <option value="17:30">5:30 PM</option>
+                                        <option value="18:00">6:00 PM</option>
+                                        <option value="18:30">6:30 PM</option>
+                                        <option value="19:00">7:00 PM</option>
+                                        <option value="19:30">7:30 PM</option>
+                                        <option value="20:00">8:00 PM</option>
+                                        <option value="20:30">8:30 PM</option>
+                                        <option value="21:00">9:00 PM</option>
+                                        <option value="21:30">9:30 PM</option>
+                                        <option value="22:00">10:00 PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="guests" class="block text-gray-700 dark:text-gray-300 mb-2">Number of Guests</label>
+                                <select id="guests" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white" required>
+                                    <option value="">Select</option>
+                                    <option value="1">1 Person</option>
+                                    <option value="2">2 People</option>
+                                    <option value="3">3 People</option>
+                                    <option value="4">4 People</option>
+                                    <option value="5">5 People</option>
+                                    <option value="6">6 People</option>
+                                    <option value="7">7 People</option>
+                                    <option value="8">8 People</option>
+                                    <option value="9">9+ People</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="special-requests" class="block text-gray-700 dark:text-gray-300 mb-2">Special Requests</label>
+                                <textarea id="special-requests" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-var(--primary) hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition">
+                                Reserve Table
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-100 dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-4">Contact Us</h2>
+                <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    Have questions or feedback? We'd love to hear from you
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <form class="space-y-6">
+                        <div>
+                            <label for="contact-name" class="block text-gray-700 dark:text-gray-300 mb-2">Name</label>
+                            <input type="text" id="contact-name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white" required>
+                        </div>
+                        
+                        <div>
+                            <label for="contact-email" class="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                            <input type="email" id="contact-email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white" required>
+                        </div>
+                        
+                        <div>
+                            <label for="contact-subject" class="block text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+                            <input type="text" id="contact-subject" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white" required>
+                        </div>
+                        
+                        <div>
+                            <label for="contact-message" class="block text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                            <textarea id="contact-message" rows="5" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-var(--primary) dark:bg-gray-700 dark:text-white" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-var(--primary) hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+                
+                <div>
+                    <div class="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-lg h-full">
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Visit Us</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-var(--primary) mt-1 mr-4"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 dark:text-white mb-1">Address</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">123 Culinary Avenue<br>Foodie District, FC 12345</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-phone-alt text-var(--primary) mt-1 mr-4"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 dark:text-white mb-1">Phone</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">+1 (555) 123-4567</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-envelope text-var(--primary) mt-1 mr-4"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 dark:text-white mb-1">Email</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">info@savoryhaven.com</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <i class="fas fa-clock text-var(--primary) mt-1 mr-4"></i>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800 dark:text-white mb-1">Hours</h4>
+                                    <p class="text-gray-600 dark:text-gray-300">
+                                        Monday - Friday: 11:00 AM - 10:00 PM<br>
+                                        Saturday - Sunday: 10:00 AM - 11:00 PM
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-semibold text-gray-800 dark:text-white mb-4">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-white hover:bg-var(--primary) hover:text-white transition">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-white hover:bg-var(--primary) hover:text-white transition">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-white hover:bg-var(--primary) hover:text-white transition">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-gray-700 dark:text-white hover:bg-var(--primary) hover:text-white transition">
+                                    <i class="fab fa-tiktok"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-8"> <!-- Changed md:grid-cols-4 to sm:grid-cols-2 md:grid-cols-4 -->
+                <div>
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/03812194-ddac-4f8b-b427-7164f33c9a87.png" alt="Savory Haven logo in white version" class="h-10 mb-4">
+                    <p class="text-gray-400 mb-4">Elevating dining experiences through culinary innovation and warm hospitality.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition">
+                            <i class="fab fa-yelp"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="#menu" class="text-gray-400 hover:text-white transition">Menu</a></li>
+                        <li><a href="#reservations" class="text-gray-400 hover:text-white transition">Reservations</a></li>
+                        <li><a href="#chefs" class="text-gray-400 hover:text-white transition">Our Chefs</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Opening Hours</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex justify-between">
+                            <span>Monday - Friday</span>
+                            <span>11:00 AM - 10:00 PM</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>Saturday</span>
+                            <span>10:00 AM - 11:00 PM</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span>Sunday</span>
+                            <span>10:00 AM - 11:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+                    <p class="text-gray-400 mb-4">Subscribe to receive updates on special events and seasonal menus.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 w-full rounded-l-lg focus:outline-none text-gray-900">
+                        <button type="submit" class="bg-var(--primary) hover:bg-red-700 px-4 py-2 rounded-r-lg transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 mb-4 md:mb-0">© 2023 Savory Haven. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a>
+                    <a href="#" class="text-400 hover:text-white transition">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark/Light Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            // Save preference to localStorage
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+        });
+        
+        // Check for saved preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+        
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Menu Items Data
+        const menuItems = [
+            {
+                id: 1,
+                 name: "Paneer Tikka",
+                description: "Chunks of paneer marinated in spices and grilled in a tandoor",
+                 price: 220,
+                category: "starters",
+                popular: true,
+                image: "https://images.unsplash.com/photo-1600891964599-f61ba0e24092"
+            },
+            {
+                id: 2,
+                name: "Chicken Tikkaa",
+                description: "Boneless chicken pieces marinated with yogurt and spices, grilled to perfection",
+                price: 260,
+                category: "starters",
+                popular: true,
+                image: "https://images.unsplash.com/photo-1659275797600-9f52f4e03b06?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8QnVycmF0YSUyMFNhbGFkfGVufDB8fDB8fHww"
+            },
+            {
+                id: 3,
+                name: "Veg Spring Rool",
+                description: "Crispy rolls stuffed with mixed vegetables and served with sweet chili sauce",
+                price: 180,
+                category: "starters",
+                image: "https://plus.unsplash.com/premium_photo-1668616815106-2fb55768587c?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8QmVlZiUyMENhcnBhY2Npb3xlbnwwfHwwfHx8MA%3D%3D"
+            },
+            {
+                id: 4,
+                name: "Chicken Lollipop",
+                description: "Drums of heaven marinated in spicy sauce and deep-fried",
+                price: 240,
+                category: "starters",
+                image: "https://media.istockphoto.com/id/1090739066/photo/appetizer-chicken-lollipop.webp?a=1&b=1&s=612x612&w=0&k=20&c=DBJR8MQH4DNyEvtPhoxjB9uNK3OhArbJByKt4Y8aJ0Q="
+            },
+            {
+                id: 5,
+                name: "Hara Bhara Kebab",
+                description: "Green vegetable patties with Indian spices, pan-fried and served with mint chutney",
+                 price: 200,
+                category: "starters",
+                popular: true,
+                image: "https://media.istockphoto.com/id/1049733592/photo/hara-bhara-kebab.webp?a=1&b=1&s=612x612&w=0&k=20&c=7wuSIGmnxmVxDocqh9B_gakuU7haMSGB8o5COuGcxAo="
+            },
+            {
+                id: 6,
+                name: "Hot & Sour Soup (Veg)",
+                description: "Spicy and tangy Indo-Chinese soup with vegetables and tofu",
+                price: 120,
+                category: "soups",
+                popular: true,
+                image: "https://media.istockphoto.com/id/1333237441/photo/hot-and-sour-soup.webp?a=1&b=1&s=612x612&w=0&k=20&c=LpJoA5PN_ID5DrlFT4lQQ0naGLONubVld2xNnwQVBTQ="
+            },
+            {
+                id: 7,
+                name: "Sweet Corn Soup (Chicken)",
+                description: "Creamy sweet corn soup with shredded chicken",
+                price: 140,
+                category: "soups",
+                image: "https://media.istockphoto.com/id/1789381453/photo/delicious-creamy-corn-soup-in-a-bowl.jpg?s=612x612&w=0&k=20&c=tsFKqU-tryCLWNw9I-nYiYtuV6QU87GjWps8aXOGPJA="
+            },
+            {
+                id: 8,
+                name: "Butter Chicken",
+                description: "Tender chicken in rich buttery tomato gravy",
+                price: 320,
+                category: "mains",
+                image: "https://media.istockphoto.com/id/2185257273/photo/indian-curry-tikka-masala-chicken-lamb-mutton-rogan-josh-with-rice-and-naan-bread-dark.webp?a=1&b=1&s=612x612&w=0&k=20&c=UUcFWotW2prUYu4oHQpsWPUcjqqEcNf_OIRKEnRHWTw="
+            },
+            {
+                id: 9,
+                name:  "Paneer Butter Masala",
+                description: "Cottage cheese cooked in a buttery tomato and cream gravy",
+                price: 260,
+                category: "mains",
+                popular: true,
+                image: "https://media.istockphoto.com/id/1305516669/photo/shahi-paneer-or-paneer-kadai.webp?a=1&b=1&s=612x612&w=0&k=20&c=6FZjTED4AMVhUlQ6-fM__MMSds-h18jj7qFuZRKqFsk="
+            },
+            {
+                id: 10,
+                name: "Dal Makhani",
+                description: "Slow-cooked black lentils in a creamy tomato base",
+                price: 200,
+                category: "mains",
+                popular: true,
+                image: "https://media.istockphoto.com/id/531238750/photo/dal-makhani-or-dal-makhani-or-daal-makhni.webp?a=1&b=1&s=612x612&w=0&k=20&c=UXhjvwPIbhRvZ8KzekfgFO4BtPjZYr8z2lvdymIniGw="
+            },
+            {
+                id: 11,
+                name: "Mutton Rogan Josh",
+                description: "Kashmiri-style aromatic mutton curry with yogurt and spices",
+                price: 360,
+                category: "mains",
+                popular: true,
+                image: "https://media.istockphoto.com/id/1309538220/photo/rogan-josh.webp?a=1&b=1&s=612x612&w=0&k=20&c=-ZxCNJX1L8hPiQR5tYcfLa2PfKMC615F6Jn5uPSa0JE="
+            },
+            {
+                id: 12,
+                name: "Chicken Curry",
+                description: "Traditional Indian chicken curry with onion-tomato masala",
+                price: 280,
+                category: "mains",
+                image: "https://media.istockphoto.com/id/1501040363/photo/chicken-curry-in-bowl-with-indian-spices.webp?a=1&b=1&s=612x612&w=0&k=20&c=-oQe3mGIl1GMv6eFXmwxFeopf-YeMoVFIFultBbgNdg="
+            },
+            {
+                id: 13,
+                name:"Veg Pulao",
+                description: "Fragrant basmati rice cooked with mixed vegetables and whole spices",
+                price: 180,
+                category: "rice",
+                image:"https://media.istockphoto.com/id/2212836819/photo/indian-veg-biryani-veg-pulav-indian-vegetable-pulav-biriyani-vegetable-biriyani-served-in-a.webp?a=1&b=1&s=612x612&w=0&k=20&c=bZcqDkHE3n-8zDn9sxkG1q1sVvwJmZP21wKtSq6M278="
+               
+            },
+            {
+                id: 14,
+                name: "Chicken Biryani",
+                description: "Hyderabadi-style spiced chicken layered with basmati rice",
+                price: 280,
+                category: "rice",
+                 popular: true,
+                 image:"https://media.istockphoto.com/id/1058029096/photo/chicken-biryani.webp?a=1&b=1&s=612x612&w=0&k=20&c=jjPwycS_qHz52KYp4sNBXRy9gl6k4L8KXsN8b9En9fs="
+            },
+            {
+                id: 15,
+                name:  "Mutton Biryani",
+                description: "Fragrant basmati rice cooked with marinated mutton and saffron",
+                price: 340,
+                category: "rice",
+                image:"https://media.istockphoto.com/id/1319621835/photo/gosht-or-lamb-biryani-prepared-in-basmati-rice-served-with-yogurt-dip-in-terracotta-bowl.webp?a=1&b=1&s=612x612&w=0&k=20&c=baj0FuFbthTblyekTjTYYXiNlSOeUgQ8FMPEWCm3v-o="
+            },
+            {
+                id: 16,
+                name: "Jeera Rice",
+                description: "Steamed basmati rice tempered with cumin seeds",
+                price: 120,
+                category: "rice",
+                image:"https://media.istockphoto.com/id/667918214/photo/indian-jeera-rice-long-grain-basmati-rice.webp?a=1&b=1&s=612x612&w=0&k=20&c=kklaFwxHk72xjPn3GQQ3LMx2ssV2G_6LBX0facyEHut4="
+            },
+            {
+                 id: 17,
+                name:  "Red Sauce Pasta",
+                description: "Penne pasta in spicy tangy tomato sauce with herbs and vegetables",
+                price: 240,
+                category: "continental",
+                image:"https://media.istockphoto.com/id/480927077/photo/tomato-penne.webp?a=1&b=1&s=612x612&w=0&k=20&c=j2WZtJCu0hZLqsFxyhTy9M-wdWeRBOBxr6bAZpEfKKg="
+            },
+             {
+                 id: 18,
+                name: "Grilled Chicken",
+                description: "Herb-marinated grilled chicken breast with sautéed veggies",
+                price: 300,
+                category: "continental",
+                image:"https://media.istockphoto.com/id/1161599224/photo/grilled-chicken-breast-directly-above-photo.webp?a=1&b=1&s=612x612&w=0&k=20&c=F3H5aG7JkyIoenvutmoKqpwk1VBVdMtbcJ9c4rC307Q="
+            },
+             {
+                 id: 19,
+                name:  "Cheesy Garlic Bread",
+                description: "Toasted baguette slices topped with garlic butter and melted cheese",
+                price: 140,
+                category: "continental",
+                image:"https://media.istockphoto.com/id/171297854/photo/garlic-bread.webp?a=1&b=1&s=612x612&w=0&k=20&c=5VsP35mqGgh_9LG3Hkw688X6_kfIFaflzuMOj7bNpAI="
+            },
+             {
+                 id: 20,
+                name:  "Masala Chaas",
+                description: "Refreshing spiced buttermilk served chilled",
+                price: 60,
+                category: "beverages",
+                image:"https://media.istockphoto.com/id/1159362126/photo/spiced-buttermilk.webp?a=1&b=1&s=612x612&w=0&k=20&c=ziGdjFvR__4mNGHhR9J3o_eBbor-LWBt-2oGorhpcU0="
+            },
+             {
+                 id: 21,
+                name: "Virgin Mojito",
+                description: "Minty lime soda with a dash of sweetness",
+                price: 120,
+                category: "beverages",
+                image:"https://media.istockphoto.com/id/2051002797/photo/virgin-lemon-mint-mojito-soda-served-in-cocktail-glass-isolated-on-dark-background-side-view.jpg?s=612x612&w=0&k=20&c=0JdFHWjV-n3d0tWmAIKOcZfCqkLJYByNaXUrIUTTu1U="
+            },
+            {
+                 id: 22,
+                name:  "Cold Coffee",
+                description: "Iced coffee blended with milk and sugar",
+                price: 140,
+                category: "beverages",
+                image:"https://media.istockphoto.com/id/542212056/photo/ice-coffee-in-a-tall-glass-and-coffee-beans.jpg?s=612x612&w=0&k=20&c=lfw6nY_ZBt57XPtXN60Bx2Qy9Ga5nIokg995_Vy5EJ0="
+            },
+            {
+                 id: 23,
+                name: "Gulab Jamun",
+                description: "Soft milk-solid dumplings soaked in sugar syrup",
+                price: 90,
+                category: "dessert",
+                image:"https://media.istockphoto.com/id/1188000786/photo/gulab-jamun-in-bowl-on-wooden-background-indian-dessert-or-sweet-dish.jpg?s=612x612&w=0&k=20&c=FICjdgqO7rk2Kt4zpsP1bvr_Wa3mDphyd-Y48-MHo8w="
+            },
+            {
+                 id: 24,
+                name: "Chocolate Lava Cake",
+                description: "Molten chocolate-filled cake served warm",
+                price: 160,
+                category: "dessert",
+                image:"https://media.istockphoto.com/id/544716244/photo/warm-chocolate-lava-cake-with-molten-center-and-red-currants.jpg?s=612x612&w=0&k=20&c=i1rRa1x7D1pu-INKabmC21BaU9MC8ZRQdcC7dBLdzUo="
+            },
+            {
+                 id: 25,
+                name: "Ice Cream Sundae",
+                description: "Vanilla ice cream topped with chocolate syrup, nuts, and cherry",
+                price: 140,
+                category: "dessert",
+                image:"https://media.istockphoto.com/id/172441738/photo/ice-cream-sundae.jpg?s=612x612&w=0&k=20&c=hgfzC9_D8BRyJm9hwg5DK9d2aZ9WuhCCHdlwrk9PQDc="
+            },
+        ];
+        
+        // Load Menu Items
+        function loadMenuItems(category = 'all') {
+            const container = document.getElementById('menu-items-container');
+            container.innerHTML = '';
+            
+            let filteredItems = menuItems;
+            if (category !== 'all') {
+                filteredItems = menuItems.filter(item => item.category === category);
+            }
+            
+            filteredItems.slice(0, 6).forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'menu-item bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg';
+                itemElement.innerHTML = `
+                    <div class="h-48 bg-gray-200 overflow-hidden">
+                        <img src="${item.image || 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/default-dish.jpg'}" alt="${item.name} - ${item.description}" class="w-full h-full object-cover">
+                        ${item.popular ? '<div class="absolute top-4 right-4 bg-var(--primary) text-white px-3 py-1 rounded-full text-xs font-bold">Popular</div>' : ''}
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">${item.name}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">${item.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-var(--primary) font-bold">$${item.price}</span>
+                            <button class="add-to-cart text-sm text-gray-500 dark:text-gray-400 hover:text-var(--primary) dark:hover:text-white" data-id="${item.id}">
+                                Add to Cart <i class="fas fa-plus ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(itemElement);
+            });
+        }
+        
+        // Menu Category Filter
+        const menuCategories = document.querySelectorAll('.menu-category');
+        menuCategories.forEach(button => {
+            button.addEventListener('click', () => {
+                menuCategories.forEach(btn => {
+                    btn.classList.remove('bg-var(--primary)', 'text-white');
+                    btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-white');
+                });
+                
+                button.classList.add('bg-var(--primary)', 'text-white');
+                button.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-800', 'dark:text-white');
+                
+                const category = button.getAttribute('data-category');
+                loadMenuItems(category);
+            });
+        });
+        
+        // Initialize menu
+        loadMenuItems();
+        
+        // Load More Menu Items
+        document.getElementById('load-more').addEventListener('click', () => {
+            const container = document.getElementById('menu-items-container');
+            container.innerHTML = '';
+            
+            menuItems.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'menu-item bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg';
+                itemElement.innerHTML = `
+                    <div class="h-48 bg-gray-200 overflow-hidden">
+                        <img src="${item.image || 'https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/default-dish.jpg'}" alt="${item.name} - ${item.description}" class="w-full h-full object-cover">
+                        ${item.popular ? '<div class="absolute top-4 right-4 bg-var(--primary) text-white px-3 py-1 rounded-full text-xs font-bold">Popular</div>' : ''}
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">${item.name}</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">${item.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-var(--primary) font-bold">$${item.price}</span>
+                            <button class="add-to-cart text-sm text-gray-500 dark:text-gray-400 hover:text-var(--primary) dark:hover:text-white" data-id="${item.id}">
+                                Add to Cart <i class="fas fa-plus ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(itemElement);
+            });
+            
+            document.getElementById('load-more').textContent = 'Menu Loaded';
+            document.getElementById('load-more').classList.add('bg-gray-200', 'dark:bg-gray-700', 'cursor-not-allowed');
+            document.getElementById('load-more').disabled = true;
+        });
+        
+        // Testimonials Carousel
+        const reviews = [
+            {
+                name: "Sarah Johnson",
+                role: "Food Critic",
+                content: "Savory Haven redefines fine dining. Every dish is a masterpiece, and the service is impeccable. The truffle risotto is worth the visit alone!",
+                rating: 5
+            },
+            {
+                name: "Michael Chen",
+                role: "Regular Customer",
+                content: "I've been coming here for years and it never disappoints. The seasonal menu keeps things fresh, and the wine pairings are always spot on.",
+                rating: 5
+            },
+            {
+                name: "Emily Rodriguez",
+                role: "First-time Visitor",
+                content: "What an amazing experience! The ambiance, the food, the service - everything was perfect. Can't wait to come back for our anniversary.",
+                rating: 5
+            }
+        ];
+        
+        let currentReview = 0;
+        
+        function showReview(index) {
+            const carousel = document.getElementById('reviews-carousel');
+            const reviewCard = carousel.querySelector('.review-card'); // Get one card to measure its width
+
+            if (!reviewCard) return; // Exit if no review cards are present
+
+            // Calculate how many cards fit in the current view
+            let cardsInView = 1;
+            if (window.innerWidth >= 1024) { // lg breakpoint
+                cardsInView = 3;
+            } else if (window.innerWidth >= 768) { // md breakpoint
+                cardsInView = 2;
+            }
+
+            // Calculate the percentage to translate
+            const translatePercentage = (index / cardsInView) * 100;
+            carousel.style.transform = `translateX(-${translatePercentage}%)`;
+            
+            // Update active dot
+            document.querySelectorAll('.review-dot').forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.add('bg-var(--primary)', 'dark:bg-white');
+                    dot.classList.remove('bg-gray-300', 'dark:bg-gray-600');
+                } else {
+                    dot.classList.remove('bg-var(--primary)', 'dark:bg-white');
+                    dot.classList.add('bg-gray-300', 'dark:bg-gray-600');
+                }
+            });
+        }
+        
+        // Initialize reviews carousel
+        function initReviewsCarousel() {
+            const carousel = document.getElementById('reviews-carousel');
+            carousel.innerHTML = '';
+            
+            reviews.forEach(review => {
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'review-card flex-shrink-0 w-full px-4';
+                reviewElement.innerHTML = `
+                    <div class="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-md">
+                        <div class="flex mb-4">
+                            ${Array(review.rating).fill('<i class="fas fa-star text-yellow-400"></i>').join('')}
+                            ${Array(5 - review.rating).fill('<i class="fas fa-star text-gray-300"></i>').join('')}
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 italic mb-6">"${review.content}"</p>
+                        <div class="flex items-center">
+                            <div class="h-12 w-12 rounded-full bg-gray-200 overflow-hidden mr-4">
+                                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/507e67a3-3f35-4f5f-8eeb-53f556157d0b.png" alt="${review.name} portrait" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-800 dark:text-white">${review.name}</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">${review.role}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                carousel.appendChild(reviewElement);
+            });
+            
+            showReview(0);
+        }
+        
+        // Navigation for reviews
+        document.getElementById('prev-review').addEventListener('click', () => {
+            currentReview = (currentReview - 1 + reviews.length) % reviews.length;
+            showReview(currentReview);
+        });
+        
+        document.getElementById('next-review').addEventListener('click', () => {
+            currentReview = (currentReview + 1) % reviews.length;
+            showReview(currentReview);
+        });
+        
+        // Dot navigation for reviews
+        document.querySelectorAll('.review-dot').forEach(dot => {
+            dot.addEventListener('click', () => {
+                currentReview = parseInt(dot.getAttribute('data-index'));
+                showReview(currentReview);
+            });
+        });
+
+        // Add an event listener to re-calculate on resize
+        window.addEventListener('resize', () => {
+            showReview(currentReview); // Re-adjust position on resize
+        });
+        
+        // Initialize reviews
+        initReviewsCarousel();
+        
+        // Reservation Form Submission
+        document.getElementById('reservation-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const guests = document.getElementById('guests').value;
+            const requests = document.getElementById('special-requests').value;
+            
+            // Here you would typically send this data to a server
+            console.log('Reservation Details:', {
+                name, email, phone, date, time, guests, requests
+            });
+            
+            // Show confirmation
+            alert(`Thank you, ${name}! Your reservation for ${guests} on ${date} at ${time} has been received. We'll send a confirmation to ${email}.`);
+            
+            // Reset form
+            this.reset();
+        });
+        
+        // Virtual Tour Button
+        document.getElementById('start-tour').addEventListener('click', () => {
+            alert('Virtual tour feature would launch here! This would typically integrate with a 360° tour service.');
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Add to cart functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('add-to-cart')) {
+                const itemId = e.target.getAttribute('data-id');
+                const item = menuItems.find(i => i.id == itemId);
+                
+                // Here you would typically add to a cart system
+                alert(`Added ${item.name} to your cart!`);
+            }
+        });
+        
+        // View details for special dishes
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('view-details')) {
+                const dishCard = e.target.closest('.dish-card');
+                dishCard.querySelector('.dish-card-inner').classList.toggle('rotateY-180');
+            }
+        });
+    </script>
+    
+</body>
+</html>
